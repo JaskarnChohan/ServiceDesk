@@ -153,7 +153,7 @@ public abstract class BaseRolePanel extends JPanel {
                     ticket.setAssignedTechnicianEmail(email);
                     ticketDatabase.updateTicket(ticket);
                     panel.removeAll();
-                    List<Ticket> availableTickets = ticketDatabase.getAvailableTickets(userDatabase.getTechnicianSpecialities(email));
+                    List<Ticket> availableTickets = ticketDatabase.getAvailableTickets(userDatabase.getTechnicianSpecialties(email));
                     addTicketsToPanel(panel, availableTickets, ticketDatabase, Role.TECHNICIAN, email);
                     panel.revalidate();
                     panel.repaint();

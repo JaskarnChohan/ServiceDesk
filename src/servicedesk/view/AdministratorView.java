@@ -156,7 +156,7 @@ public class AdministratorView extends BaseRolePanel {
 
         // If account is a technician then add the specialties label
         if (account.getRole() == Role.TECHNICIAN) {
-            List<Category> specialties = userDatabase.getTechnicianSpecialities(account.getEmail());
+            List<Category> specialties = userDatabase.getTechnicianSpecialties(account.getEmail());
             if (!specialties.isEmpty()) {
                 StringBuilder specialtiesBuilder = new StringBuilder();
                 for (int i = 0; i < specialties.size(); i++) {

@@ -100,7 +100,7 @@ public class LoginController {
 
     // Method to create a technician object based on the email. 
     private Technician createTechnician(String email) {
-        List<Category> specialties = database.getTechnicianSpecialities(email);
+        List<Category> specialties = database.getTechnicianSpecialties(email);
         User user = database.getUserByEmail(email);
         if (user != null) {
             return new Technician(user.getFullName(), user.getEmail(), user.getHashedPassword(), user.getPhoneNumber(), user.getDepartment(), specialties);

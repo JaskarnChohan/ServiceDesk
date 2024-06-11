@@ -83,7 +83,7 @@ public class EditUserView extends BasePanel {
         panel.add(currentSpecialtiesLabel, gbc);
 
         // Add current specialties value
-        List<Category> currentSpecialties = database.getTechnicianSpecialities(user.getEmail());
+        List<Category> currentSpecialties = database.getTechnicianSpecialties(user.getEmail());
         List<String> currentSpecialtyNames = new ArrayList<>();
         for (Category specialty : currentSpecialties) {
             currentSpecialtyNames.add(specialty.toString());
