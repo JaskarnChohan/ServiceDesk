@@ -1,6 +1,7 @@
 package servicedesk;
 
-import servicedesk.database.DatabaseConnection;
+import servicedesk.database.*;
+import servicedesk.controller.ApplicationController;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +35,12 @@ public class Main {
             frame.add(mainPanel);
             frame.setVisible(true);
 
+            UserDatabase userDatabase = new UserDatabase(dbConnection.getConnection());
+            TicketDatabase ticketDatabase = new TicketDatabase(dbConnection.getConnection());
+
+            ApplicationController appController = new ApplicationController(userDatabase, ticketDatabase, mainPanel, cardLayout);
+
+            appController.showWelcomePanel();
         } catch (Exception ex) {
             // Display an error message if application fails to start up. 
             JOptionPane.showMessageDialog(null, "Failed to start the application: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
