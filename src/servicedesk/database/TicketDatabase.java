@@ -175,7 +175,7 @@ public class TicketDatabase {
         }
         return tickets;
     }
-    
+
     // Method to insert a comment into the table connected to a ticket. 
     public void insertComment(int ticketId, LocalDateTime timestamp, String createdByEmail, String content) throws SQLException {
         String query = "INSERT INTO comments (ticket_id, timestamp, created_by_email, content) VALUES (?, ?, ?, ?)";
@@ -186,5 +186,32 @@ public class TicketDatabase {
             statement.setString(4, content);
             statement.executeUpdate();
         }
+    }
+
+    // Method to get all tickets in the table. 
+    public List<Ticket> getAllTickets() {
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets";
+        try (PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int ticketId = rs.getInt("ticket_id");
+                Category category = Category.valueOf(rs.getString("category"));
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                Priority priority = Priority.valueOf(rs.getString("priority"));
+                LocalDate createdDate = rs.getTimestamp("created_date").toLocalDateTime().toLocalDate();
+                String createdByUserEmail = rs.getString("created_by_user_email");
+                String assignedTechnicianEmail = rs.getString("assigned_technician_email");
+                boolean resolved = rs.getBoolean("resolved");
+
+                List<Comment> comments = getCommentsForTicket(ticketId);
+
+                Ticket ticket = new Ticket(ticketId, category, title, description, priority, createdDate, createdByUserEmail, assignedTechnicianEmail, resolved, comments);
+                tickets.add(ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
     }
 }

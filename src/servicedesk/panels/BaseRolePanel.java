@@ -97,7 +97,7 @@ public class BaseRolePanel extends JPanel {
 
         if (role == Role.TECHNICIAN || role == Role.ADMINISTRATOR) {
             String createdByEmail = ticket.getCreatedByEmail();
-            JLabel detailsTextLabel = new JLabel("Created By" + createdByEmail);
+            JLabel detailsTextLabel = new JLabel("Created By: " + createdByEmail);
             detailsTextLabel.setFont(new Font("Arial", Font.PLAIN, 12));
             detailsTextLabel.setForeground(Color.DARK_GRAY);
             detailsPanel.add(detailsTextLabel);

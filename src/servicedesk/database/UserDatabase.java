@@ -52,7 +52,7 @@ public class UserDatabase {
             return false;
         }
     }
-    
+
     // Method to authenticate the user using email and hashed password. Used uring login. 
     public User authenticateUser(String email, String hashedPassword) {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
@@ -94,7 +94,7 @@ public class UserDatabase {
 
         return specialties;
     }
-    
+
     // Method to get a user's information using their email. 
     public User getUserByEmail(String email) {
         String query = "SELECT * FROM users WHERE email = ?";
@@ -115,5 +115,27 @@ public class UserDatabase {
         }
         return null;
     }
-    
+
+    // Method to get all users from the database. 
+    public List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM users";
+        try (PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                String fullName = rs.getString("full_name");
+                String email = rs.getString("email");
+                String hashedPassword = rs.getString("password");
+                String phoneNumber = rs.getString("phone_number");
+                String department = rs.getString("department");
+                Role role = Role.valueOf(rs.getString("role"));
+
+                User user = new User(fullName, email, hashedPassword, phoneNumber, department, role);
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
 }

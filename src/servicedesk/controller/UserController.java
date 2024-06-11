@@ -1,7 +1,5 @@
 package servicedesk.controller;
 
-import servicedesk.database.TicketDatabase;
-import servicedesk.database.UserDatabase;
 import servicedesk.models.User;
 import servicedesk.view.UserView;
 

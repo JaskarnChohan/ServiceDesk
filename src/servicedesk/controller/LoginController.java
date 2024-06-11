@@ -85,7 +85,7 @@ public class LoginController {
                 appController.showUserPanel(authenticatedUser);
                 break;
             case ADMINISTRATOR:
-                // ppController.showAdministratorPanel();
+                appController.showAdministratorPanel();
                 break;
             case TECHNICIAN:
                 // Create a new technician object. 

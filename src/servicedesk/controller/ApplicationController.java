@@ -58,11 +58,18 @@ public class ApplicationController {
         CreateTicketController createTicketController = new CreateTicketController(createTicketView, ticketDatabase, this, authenticatedUser);
         cardLayout.show(mainPanel, "CreateTicketPanel");
     }
-    
-        public void showAddCommentPanel(User authenticatedUser, Technician technician) {
+
+    public void showAddCommentPanel(User authenticatedUser, Technician technician) {
         AddCommentView addCommentView = new AddCommentView(mainPanel, cardLayout, ticketDatabase, authenticatedUser, technician);
         mainPanel.add(addCommentView, "AddCommentPanel");
         AddCommentController createTicketController = new AddCommentController(addCommentView, ticketDatabase, this, authenticatedUser, technician);
         cardLayout.show(mainPanel, "AddCommentPanel");
+    }
+
+    public void showAdministratorPanel() {
+        AdministratorView administratorView = new AdministratorView(mainPanel, cardLayout, ticketDatabase, userDatabase, this);
+        mainPanel.add(administratorView, "AdministratorPanel");
+        AdministratorController administratorController = new AdministratorController(administratorView, ticketDatabase, userDatabase, this);
+        cardLayout.show(mainPanel, "AdministratorPanel");
     }
 }
