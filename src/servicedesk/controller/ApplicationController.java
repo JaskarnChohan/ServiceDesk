@@ -50,4 +50,11 @@ public class ApplicationController {
         cardLayout.show(mainPanel, "UserPanel");
         userView.refreshTickets();
     }
+
+    public void showCreateTicketPanel(User authenticatedUser) {
+        CreateTicketView createTicketView = new CreateTicketView(mainPanel, cardLayout);
+        mainPanel.add(createTicketView, "CreateTicketPanel");
+        CreateTicketController createTicketController = new CreateTicketController(createTicketView, ticketDatabase, this, authenticatedUser);
+        cardLayout.show(mainPanel, "CreateTicketPanel");
+    }
 }

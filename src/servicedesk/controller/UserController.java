@@ -36,7 +36,7 @@ public class UserController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Show the create ticket panel
-                //appController.showCreateTicketPanel(user);
+                appController.showCreateTicketPanel(user);
             }
         });
 

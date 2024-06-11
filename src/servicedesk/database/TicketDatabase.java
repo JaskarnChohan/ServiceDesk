@@ -51,8 +51,8 @@ public class TicketDatabase {
         return userTickets;
     }
 
-    // Private method to get comments for a ticket using the ticketId. 
-    private List<Comment> getCommentsForTicket(int ticketId) {
+    // Method to get comments for a ticket using the ticketId. 
+    public List<Comment> getCommentsForTicket(int ticketId) {
         List<Comment> comments = new ArrayList<>();
         String commentQuery = "SELECT * FROM comments WHERE ticket_id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(commentQuery)) {
@@ -72,5 +72,44 @@ public class TicketDatabase {
             e.printStackTrace();
         }
         return comments;
+    }
+
+    // Method to insert a new ticket into the table. 
+    public void insertTicket(String title, String description, Category category, Priority priority, LocalDate createdDate, String createdByUserEmail, boolean resolved, String assignedTechnicianEmail) throws SQLException {
+        int nextId = getNextTicketId();
+        if (nextId == -1) {
+            System.err.println("Failed to retrieve next ticket ID.");
+            return;
+        }
+        String insertTicketSQL = "INSERT INTO tickets (ticket_id, category, title, description, priority, created_date, created_by_user_email, assigned_technician_email, resolved) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(insertTicketSQL)) {
+            pstmt.setInt(1, nextId);
+            pstmt.setString(2, category.name());
+            pstmt.setString(3, title);
+            pstmt.setString(4, description);
+            pstmt.setString(5, priority.name());
+            pstmt.setTimestamp(6, java.sql.Timestamp.valueOf(createdDate.atStartOfDay()));
+            pstmt.setString(7, createdByUserEmail);
+            pstmt.setString(8, assignedTechnicianEmail);
+            pstmt.setBoolean(9, resolved);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Private method to return the next ticket id.  
+    private int getNextTicketId() {
+        String query = "SELECT MAX(ticket_id) AS max_id FROM tickets";
+        try (PreparedStatement pstmt = conn.prepareStatement(query); ResultSet rs = pstmt.executeQuery()) {
+            if (rs.next()) {
+                int maxId = rs.getInt("max_id");
+                return maxId + 1;
+            } else {
+                return 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }
