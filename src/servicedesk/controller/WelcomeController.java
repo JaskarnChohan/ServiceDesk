@@ -7,15 +7,16 @@ import java.awt.event.ActionListener;
 
 public class WelcomeController {
 
+    // Reference to the SignupPanelView and ApplicationController
     private final WelcomeView view;
     private final ApplicationController appController;
 
-    // Constructor to initialise the controller with the view and application controller
+    // Default contructor to initialise the WelcomeController 
     public WelcomeController(WelcomeView view, ApplicationController appController) {
         this.view = view;
         this.appController = appController;
-        // Call method to set up event listerns 
-        setupListeners(); 
+        // Call method to set up event listenrns 
+        setupListeners();
     }
 
     // Method to set up event listeners for the view components
@@ -34,7 +35,7 @@ public class WelcomeController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Make the application controller switch to signup panel
-                // appController.showSignupPanel();
+                appController.showSignupPanel();
             }
         });
     }

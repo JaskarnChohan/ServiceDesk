@@ -27,4 +27,11 @@ public class ApplicationController {
         WelcomeController welcomeController = new WelcomeController(welcomeView, this);
         cardLayout.show(mainPanel, "WelcomePanel");
     }
+
+    public void showSignupPanel() {
+        SignupView signupView = new SignupView(mainPanel, cardLayout);
+        mainPanel.add(signupView, "SignupPanel");
+        SignupController signupPanelController = new SignupController(signupView, userDatabase, this);
+        cardLayout.show(mainPanel, "SignupPanel");
+    }
 }

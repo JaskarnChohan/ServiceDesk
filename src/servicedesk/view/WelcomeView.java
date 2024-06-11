@@ -5,13 +5,22 @@ import java.awt.*;
 import servicedesk.StyledButton;
 import servicedesk.panels.BasePanel;
 
+/**
+ * View class for the Welcome Panel which is responsible for displaying the
+ * welcome page.
+ */
 public class WelcomeView extends BasePanel {
 
     // Components
     private final StyledButton loginButton;
     private final StyledButton signupButton;
 
-    // Default constructor
+    /**
+     * Constructor to initialise the WelcomeView.
+     *
+     * @param mainPanel The main panel where this view will be added.
+     * @param cardLayout The card layout to switch between panels.
+     */
     public WelcomeView(JPanel mainPanel, CardLayout cardLayout) {
         super(mainPanel, cardLayout);
 
