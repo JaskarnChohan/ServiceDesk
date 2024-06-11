@@ -12,11 +12,11 @@ import java.awt.event.ActionListener;
 
 /**
  * Controller class for the Signup Panel. Responsible for handling user
- * interactions through the buttons.
+ * interactions through the buttons to signup. 
  */
 public class SignupController {
 
-    // Reference to the SignupPanelView, Database, and ApplicationController
+    // Reference to the SignupView, Database and ApplicationController
     private final SignupView view;
     private final UserDatabase database;
     private final ApplicationController appController;
@@ -26,7 +26,7 @@ public class SignupController {
         this.view = view;
         this.database = database;
         this.appController = appController;
-        // Call method to set up event listenrns 
+        // Call method to set up event listeners
         initListeners();
     }
 
@@ -74,7 +74,7 @@ public class SignupController {
                 if (database.saveUser(user)) {
                     CustomDialog.showSuccessMessage(view, "Signup successful!");
                     view.clearFields(); // Clear the form fields
-                    // appController.showLoginPanel(); // Switch to login panel for the user to login. 
+                    appController.showLoginPanel(); // Switch to login panel for the user to login. 
                 } else {
                     CustomDialog.showErrorMessage(view, "Signup failed. Please try again.");
                 }

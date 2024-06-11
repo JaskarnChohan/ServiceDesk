@@ -3,6 +3,7 @@ package servicedesk.controller;
 import servicedesk.database.TicketDatabase;
 import servicedesk.database.UserDatabase;
 import servicedesk.view.*;
+import servicedesk.models.User;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
@@ -34,4 +35,12 @@ public class ApplicationController {
         SignupController signupPanelController = new SignupController(signupView, userDatabase, this);
         cardLayout.show(mainPanel, "SignupPanel");
     }
+
+    public void showLoginPanel() {
+        LoginView loginView = new LoginView(mainPanel, cardLayout);
+        mainPanel.add(loginView, "LoginPanel");
+        LoginController loginPanelController = new LoginController(loginView, userDatabase, this);
+        cardLayout.show(mainPanel, "LoginPanel");
+    }
+        
 }

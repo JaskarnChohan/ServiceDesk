@@ -26,7 +26,7 @@ public class WelcomeController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Make the application controller switch to login panel 
-                // appController.showLoginPanel();
+                appController.showLoginPanel();
             }
         });
 
