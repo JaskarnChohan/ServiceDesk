@@ -42,5 +42,12 @@ public class ApplicationController {
         LoginController loginPanelController = new LoginController(loginView, userDatabase, this);
         cardLayout.show(mainPanel, "LoginPanel");
     }
-        
+
+    public void showUserPanel(User authenticatedUser) {
+        UserView userView = new UserView(mainPanel, cardLayout, ticketDatabase, userDatabase, authenticatedUser);
+        mainPanel.add(userView, "UserPanel");
+        UserController userPanelController = new UserController(userView, this, authenticatedUser);
+        cardLayout.show(mainPanel, "UserPanel");
+        userView.refreshTickets();
+    }
 }

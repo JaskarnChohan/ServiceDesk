@@ -82,7 +82,7 @@ public class LoginController {
         Role userRole = authenticatedUser.getRole();
         switch (userRole) {
             case USER:
-                // appController.showUserPanel(authenticatedUser);
+                appController.showUserPanel(authenticatedUser);
                 break;
             case ADMINISTRATOR:
                 // ppController.showAdministratorPanel();
