@@ -11,7 +11,6 @@ import servicedesk.panels.BasePanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.sql.SQLException;
 
 /**
  * View class for the Add Comment Panel which is responsible for displaying
@@ -78,7 +77,7 @@ public class AddCommentView extends BasePanel {
     }
 
     // Method to refresh the ticket combo box with tickets revelant to the user or technician. 
-    private void refreshTicketComboBox() {
+    private void refreshTicketComboBox(){
         try {
             ticketComboBox.removeAllItems();
             List<Ticket> tickets;
@@ -91,7 +90,7 @@ public class AddCommentView extends BasePanel {
                 ticketComboBox.addItem(ticket);
             }
             ticketComboBox.setSelectedIndex(-1);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             CustomDialog.showErrorMessage(this, "Failed to load tickets: " + e.getMessage());
         }
     }

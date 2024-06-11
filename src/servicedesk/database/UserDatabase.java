@@ -23,11 +23,11 @@ public class UserDatabase {
 
     // Method to check the database if the user exists. Used during signup
     public boolean userExists(String email) {
-        String query = "SELECT 1 FROM users WHERE email = ?";
+        String query = "SELECT EXISTS (SELECT 1 FROM users WHERE email = ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, email);
             try (ResultSet resultSet = pstmt.executeQuery()) {
-                return resultSet.next(); // If there's a result then it means that a user exists
+                return resultSet.next() && resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -182,17 +182,22 @@ public class UserDatabase {
 
             // Commit transaction
             conn.commit();
-            conn.setAutoCommit(true);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
             try {
                 conn.rollback();
-                conn.setAutoCommit(true);
             } catch (SQLException rollbackEx) {
                 rollbackEx.printStackTrace();
             }
             return false;
+        } finally {
+            try {
+                conn.setAutoCommit(true);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
 }
