@@ -29,16 +29,14 @@ public class AdministratorView extends BaseRolePanel {
     private StyledButton editSpecialtiesButton;
     private StyledButton editRoleButton;
     private StyledButton editPasswordButton;
+    private final TicketDatabase ticketDatabase;
+    private final UserDatabase userDatabase;
 
     // Constructor to initialize the AdministratorPanelView.
     public AdministratorView(JPanel mainPanel, CardLayout cardLayout, TicketDatabase ticketDatabase, UserDatabase userDatabase, ApplicationController appController) {
-        super(ticketDatabase, userDatabase);
+        this.ticketDatabase = ticketDatabase;
+        this.userDatabase = userDatabase;
         this.appController = appController;
-
-        // Set layout and background
-        setLayout(new BorderLayout(10, 10));
-        setBackground(Color.LIGHT_GRAY);
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         // Add title label
         JLabel titleLabel = new JLabel("ADMINISTRATOR MENU", SwingConstants.CENTER);

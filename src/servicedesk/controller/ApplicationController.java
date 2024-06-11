@@ -79,4 +79,12 @@ public class ApplicationController {
         EditUserController editUserController = new EditUserController(editUserView, userDatabase, this, user, editType);
         cardLayout.show(mainPanel, "EditUserPanel");
     }
+
+    public void showTechnicianPanel(Technician technician) {
+        TechnicianView technicianView = new TechnicianView(mainPanel, cardLayout, ticketDatabase, userDatabase, technician);
+        technicianView.setDatabases(ticketDatabase, userDatabase);
+        mainPanel.add(technicianView, "TechnicianPanel");
+        TechnicianController technicianController = new TechnicianController(technicianView, ticketDatabase, this, technician);
+        cardLayout.show(mainPanel, "TechnicianPanel");
+    }
 }

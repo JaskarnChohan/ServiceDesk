@@ -79,7 +79,7 @@ public class AddCommentController {
             } else {
                 String technicianEmail = technician.getEmail();
                 database.insertComment(selectedTicket.getTicketId(), timestamp, technicianEmail, comment);
-                // appController.showTechnicianPanel(technician);
+                appController.showTechnicianPanel(technician);
             }
             CustomDialog.showSuccessMessage(view, "Comment added successfully!");
             view.clearFields();
@@ -94,7 +94,7 @@ public class AddCommentController {
         if (authenticatedUser != null) {
             appController.showUserPanel(authenticatedUser);
         } else {
-            // appController.showTechnicianPanel(technician);
+            appController.showTechnicianPanel(technician);
         }
     }
 }

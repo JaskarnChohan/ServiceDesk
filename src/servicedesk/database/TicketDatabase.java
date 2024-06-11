@@ -214,4 +214,65 @@ public class TicketDatabase {
         }
         return tickets;
     }
+
+    // Method to get avalible tickets based on technician's specialties.
+    public List<Ticket> getAvailableTickets(List<Category> technicianSpecialties) {
+        List<Ticket> availableTickets = new ArrayList<>();
+
+        if (technicianSpecialties.isEmpty()) {
+            return availableTickets; // If technician has no specialties, return empty list
+        }
+
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append("SELECT * FROM tickets WHERE assigned_technician_email IS NULL AND (");
+        for (int i = 0; i < technicianSpecialties.size(); i++) {
+            if (i > 0) {
+                queryBuilder.append(" OR ");
+            }
+            queryBuilder.append("category = '").append(technicianSpecialties.get(i)).append("'");
+        }
+        queryBuilder.append(")");
+
+        try (PreparedStatement pstmt = conn.prepareStatement(queryBuilder.toString()); ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                int ticketId = rs.getInt("ticket_id");
+                Category category = Category.valueOf(rs.getString("category"));
+                String title = rs.getString("title");
+                String description = rs.getString("description");
+                Priority priority = Priority.valueOf(rs.getString("priority"));
+                LocalDate createdDate = rs.getTimestamp("created_date").toLocalDateTime().toLocalDate();
+                String createdByUserEmail = rs.getString("created_by_user_email");
+                boolean resolved = rs.getBoolean("resolved");
+
+                List<Comment> comments = getCommentsForTicket(ticketId);
+
+                Ticket ticket = new Ticket(ticketId, category, title, description, priority, createdDate, createdByUserEmail, null, resolved, comments);
+                availableTickets.add(ticket);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return availableTickets;
+    }
+
+    // Method to update ticket using ticket object
+    public boolean updateTicket(Ticket ticket) {
+        String updateTicketSQL = "UPDATE tickets SET category = ?, title = ?, description = ?, priority = ?, created_date = ?, created_by_user_email = ?, assigned_technician_email = ?, resolved = ? WHERE ticket_id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(updateTicketSQL)) {
+            pstmt.setString(1, ticket.getCategory().name());
+            pstmt.setString(2, ticket.getTitle());
+            pstmt.setString(3, ticket.getDescription());
+            pstmt.setString(4, ticket.getPriority().name());
+            pstmt.setTimestamp(5, java.sql.Timestamp.valueOf(ticket.getCreatedDate().atStartOfDay()));
+            pstmt.setString(6, ticket.getCreatedByEmail());
+            pstmt.setString(7, ticket.getAssignedTechnicianEmail());
+            pstmt.setBoolean(8, ticket.isResolved());
+            pstmt.setInt(9, ticket.getTicketId());
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

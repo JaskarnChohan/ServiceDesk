@@ -39,7 +39,7 @@ public class LoginController {
         view.getLoginButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String email = view.getEmail();
+                String email = view.getEmail().toLowerCase().trim();
                 String password = view.getPassword();
 
                 // Hash the user's entered password to match the hashed password in the database. 
@@ -90,7 +90,7 @@ public class LoginController {
             case TECHNICIAN:
                 // Create a new technician object. 
                 Technician technician = createTechnician(authenticatedUser.getEmail());
-                // appController.showTechnicianPanel(technician);
+                appController.showTechnicianPanel(technician);
                 break;
             default:
                 // Highly unlikely but if incorrect role in database. 

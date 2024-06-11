@@ -12,15 +12,13 @@ import java.awt.*;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-public class BaseRolePanel extends JPanel {
+public abstract class BaseRolePanel extends JPanel {
 
-    protected final TicketDatabase ticketDatabase;
-    protected final UserDatabase userDatabase;
+    protected TicketDatabase ticketDatabase;
+    protected UserDatabase userDatabase;
 
-    public BaseRolePanel(TicketDatabase ticketDatabase, UserDatabase userDatabase) {
-        this.ticketDatabase = ticketDatabase;
-        this.userDatabase = userDatabase;
-
+    // Constructor with no TicketDatabase and UserDatabase parameters
+    public BaseRolePanel() {
         setLayout(new BorderLayout(10, 10));
         setBackground(Color.LIGHT_GRAY);
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
@@ -238,4 +236,13 @@ public class BaseRolePanel extends JPanel {
         }
     }
 
+    // Setter method for TicketDatabase
+    public void setTicketDatabase(TicketDatabase ticketDatabase) {
+        this.ticketDatabase = ticketDatabase;
+    }
+
+    // Setter method for UserDatabase
+    public void setUserDatabase(UserDatabase userDatabase) {
+        this.userDatabase = userDatabase;
+    }
 }

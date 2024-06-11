@@ -13,8 +13,8 @@ import java.awt.*;
 import java.util.List;
 
 /**
- * View class for the User Panel which is responsible for displaying the
- * user menu.
+ * View class for the User Panel which is responsible for displaying the user
+ * menu.
  */
 public class UserView extends BaseRolePanel {
 
@@ -23,6 +23,8 @@ public class UserView extends BaseRolePanel {
     private JButton addCommentButton;
     private JButton logoutButton;
     private JPanel ticketContentPanel;
+    private final TicketDatabase ticketDatabase;
+    private final UserDatabase userDatabase;
     private final User user;
 
     /**
@@ -30,12 +32,14 @@ public class UserView extends BaseRolePanel {
      *
      * @param mainPanel The main panel where this view will be added.
      * @param cardLayout The card layout to switch between panels.
-     * @param ticketDatabase The ticket database instance to get any possible ticket data.
+     * @param ticketDatabase The ticket database instance to get any possible
+     * ticket data.
      * @param userDatabase The user database instance to get user data.
      * @param user The user instance representing the current logged in user.
      */
     public UserView(JPanel mainPanel, CardLayout cardLayout, TicketDatabase ticketDatabase, UserDatabase userDatabase, User user) {
-        super(ticketDatabase, userDatabase);
+        this.ticketDatabase = ticketDatabase;
+        this.userDatabase = userDatabase;
         this.user = user;
 
         // Create and add title label
@@ -52,7 +56,7 @@ public class UserView extends BaseRolePanel {
         // Load and display user tickets
         refreshTickets();
     }
-    
+
     // Add the title label to the panel. 
     private void addTitleLabel() {
         JLabel titleLabel = new JLabel("USER MENU", SwingConstants.CENTER);
@@ -60,7 +64,6 @@ public class UserView extends BaseRolePanel {
         titleLabel.setForeground(new Color(0, 48, 63));
         add(titleLabel, BorderLayout.NORTH);
     }
-
 
     // Create and return the ticket panel 
     private JPanel createTicketPanel() {
@@ -91,7 +94,7 @@ public class UserView extends BaseRolePanel {
 
         addCommentButton = new StyledButton("ADD COMMENT");
         buttonPanel.add(addCommentButton);
-        
+
         logoutButton = new StyledButton("LOGOUT");
         buttonPanel.add(logoutButton);
 
@@ -112,8 +115,8 @@ public class UserView extends BaseRolePanel {
     }
 
     /**
-     * Method to refresh the tickets displayed in the ticket content panel.
-     * This method is called from the controller.
+     * Method to refresh the tickets displayed in the ticket content panel. This
+     * method is called from the controller.
      */
     public void refreshTickets() {
         ticketContentPanel.removeAll();

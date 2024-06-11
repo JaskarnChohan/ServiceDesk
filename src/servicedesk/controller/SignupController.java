@@ -39,7 +39,7 @@ public class SignupController {
                 // Retrieve user input from form fields
                 String firstName = view.getFirstNameField().getText();
                 String lastName = view.getLastNameField().getText();
-                String email = view.getEmailField().getText();
+                String email = view.getEmailField().getText().toLowerCase();
                 String password = new String(view.getPasswordField().getPassword());
                 String phoneNumber = view.getPhoneNumberField().getText();
                 String department = view.getDepartmentField().getText();
