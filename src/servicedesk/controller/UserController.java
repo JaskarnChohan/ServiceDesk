@@ -45,7 +45,7 @@ public class UserController {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Show the add comment panel
-                // appController.showAddCommentPanel(user, null);
+                appController.showAddCommentPanel(user, null);
             }
         });
 

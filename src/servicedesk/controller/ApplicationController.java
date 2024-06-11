@@ -4,6 +4,7 @@ import servicedesk.database.TicketDatabase;
 import servicedesk.database.UserDatabase;
 import servicedesk.view.*;
 import servicedesk.models.User;
+import servicedesk.models.Technician;
 
 import java.awt.CardLayout;
 import javax.swing.JPanel;
@@ -56,5 +57,12 @@ public class ApplicationController {
         mainPanel.add(createTicketView, "CreateTicketPanel");
         CreateTicketController createTicketController = new CreateTicketController(createTicketView, ticketDatabase, this, authenticatedUser);
         cardLayout.show(mainPanel, "CreateTicketPanel");
+    }
+    
+        public void showAddCommentPanel(User authenticatedUser, Technician technician) {
+        AddCommentView addCommentView = new AddCommentView(mainPanel, cardLayout, ticketDatabase, authenticatedUser, technician);
+        mainPanel.add(addCommentView, "AddCommentPanel");
+        AddCommentController createTicketController = new AddCommentController(addCommentView, ticketDatabase, this, authenticatedUser, technician);
+        cardLayout.show(mainPanel, "AddCommentPanel");
     }
 }

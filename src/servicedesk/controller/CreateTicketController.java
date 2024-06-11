@@ -21,10 +21,10 @@ public class CreateTicketController {
     // References to the view, database, application controller, and authenticated user
     private final CreateTicketView view;
     private final TicketDatabase database;
+    private final ApplicationController appController;
     private final User authenticatedUser;
 
-
-        // Reference to the CreateTicketView, TicketDatabase, ApplicationController and User. 
+    // Reference to the CreateTicketView, TicketDatabase, ApplicationController and User. 
     public CreateTicketController(CreateTicketView view, TicketDatabase database, ApplicationController appController, User user) {
         this.view = view;
         this.database = database;
@@ -35,7 +35,7 @@ public class CreateTicketController {
         initListeners();
     }
 
-        // Method to set up event listeners for the view components
+    // Method to set up event listeners for the view components
     private void initListeners() {
         // Action listener for the submit button
         view.getSubmitButton().addActionListener(new ActionListener() {

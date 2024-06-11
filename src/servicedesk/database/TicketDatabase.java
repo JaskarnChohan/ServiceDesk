@@ -9,9 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import servicedesk.models.User;
 
 public class TicketDatabase {
 
@@ -110,6 +113,78 @@ public class TicketDatabase {
         } catch (SQLException e) {
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    // Method to get a user's tickets that are currently not resolved. 
+    public List<Ticket> getUserOpenTickets(User user) throws SQLException {
+        List<Ticket> userTickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets WHERE created_by_user_email = ? AND resolved = false";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, user.getEmail());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int ticketId = rs.getInt("ticket_id");
+                    Category category = Category.valueOf(rs.getString("category"));
+                    String title = rs.getString("title");
+                    String description = rs.getString("description");
+                    Priority priority = Priority.valueOf(rs.getString("priority"));
+                    LocalDate createdDate = rs.getTimestamp("created_date").toLocalDateTime().toLocalDate();
+                    String createdByUserEmail = rs.getString("created_by_user_email");
+                    String assignedTechnicianEmail = rs.getString("assigned_technician_email");
+                    boolean resolved = rs.getBoolean("resolved");
+
+                    List<Comment> comments = getCommentsForTicket(ticketId);
+
+                    Ticket ticket = new Ticket(ticketId, category, title, description, priority, createdDate, createdByUserEmail, assignedTechnicianEmail, resolved, comments);
+                    userTickets.add(ticket);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return userTickets;
+    }
+
+    // Method to get tickets for a technician that are assigned to them. 
+    public List<Ticket> getTicketsForTechnician(String technicianEmail) {
+        List<Ticket> tickets = new ArrayList<>();
+        String query = "SELECT * FROM tickets WHERE assigned_technician_email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, technicianEmail);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    int ticketId = rs.getInt("ticket_id");
+                    Category category = Category.valueOf(rs.getString("category"));
+                    String title = rs.getString("title");
+                    String description = rs.getString("description");
+                    Priority priority = Priority.valueOf(rs.getString("priority"));
+                    LocalDate createdDate = rs.getTimestamp("created_date").toLocalDateTime().toLocalDate();
+                    String createdByUserEmail = rs.getString("created_by_user_email");
+                    String assignedTechnicianEmail = rs.getString("assigned_technician_email");
+                    boolean resolved = rs.getBoolean("resolved");
+
+                    List<Comment> comments = getCommentsForTicket(ticketId);
+
+                    Ticket ticket = new Ticket(ticketId, category, title, description, priority, createdDate, createdByUserEmail, assignedTechnicianEmail, resolved, comments);
+                    tickets.add(ticket);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tickets;
+    }
+    
+    // Method to insert a comment into the table connected to a ticket. 
+    public void insertComment(int ticketId, LocalDateTime timestamp, String createdByEmail, String content) throws SQLException {
+        String query = "INSERT INTO comments (ticket_id, timestamp, created_by_email, content) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, ticketId);
+            statement.setTimestamp(2, Timestamp.valueOf(timestamp));
+            statement.setString(3, createdByEmail);
+            statement.setString(4, content);
+            statement.executeUpdate();
         }
     }
 }
