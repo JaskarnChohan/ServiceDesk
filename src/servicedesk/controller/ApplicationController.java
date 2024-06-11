@@ -23,68 +23,74 @@ public class ApplicationController {
         this.cardLayout = cardLayout;
     }
 
+    // Show the welcome panel
     public void showWelcomePanel() {
         WelcomeView welcomeView = new WelcomeView(mainPanel, cardLayout);
-        mainPanel.add(welcomeView, "WelcomePanel");
         WelcomeController welcomeController = new WelcomeController(welcomeView, this);
-        cardLayout.show(mainPanel, "WelcomePanel");
+        addViewAndShow(welcomeView, "WelcomePanel");
     }
 
+    // Show the signup panel
     public void showSignupPanel() {
         SignupView signupView = new SignupView(mainPanel, cardLayout);
-        mainPanel.add(signupView, "SignupPanel");
-        SignupController signupPanelController = new SignupController(signupView, userDatabase, this);
-        cardLayout.show(mainPanel, "SignupPanel");
+        SignupController signupController = new SignupController(signupView, userDatabase, this);
+        addViewAndShow(signupView, "SignupPanel");
     }
 
+    // Show the login panel
     public void showLoginPanel() {
         LoginView loginView = new LoginView(mainPanel, cardLayout);
-        mainPanel.add(loginView, "LoginPanel");
-        LoginController loginPanelController = new LoginController(loginView, userDatabase, this);
-        cardLayout.show(mainPanel, "LoginPanel");
+        LoginController loginController = new LoginController(loginView, userDatabase, this);
+        addViewAndShow(loginView, "LoginPanel");
     }
 
+    // Show the user panel
     public void showUserPanel(User authenticatedUser) {
         UserView userView = new UserView(mainPanel, cardLayout, ticketDatabase, userDatabase, authenticatedUser);
-        mainPanel.add(userView, "UserPanel");
-        UserController userPanelController = new UserController(userView, this, authenticatedUser);
-        cardLayout.show(mainPanel, "UserPanel");
+        UserController userController = new UserController(userView, this, authenticatedUser);
+        addViewAndShow(userView, "UserPanel");
         userView.refreshTickets();
     }
 
+    // Show the create ticket panel
     public void showCreateTicketPanel(User authenticatedUser) {
         CreateTicketView createTicketView = new CreateTicketView(mainPanel, cardLayout);
-        mainPanel.add(createTicketView, "CreateTicketPanel");
         CreateTicketController createTicketController = new CreateTicketController(createTicketView, ticketDatabase, this, authenticatedUser);
-        cardLayout.show(mainPanel, "CreateTicketPanel");
+        addViewAndShow(createTicketView, "CreateTicketPanel");
     }
 
+    // Show the add comment panel
     public void showAddCommentPanel(User authenticatedUser, Technician technician) {
         AddCommentView addCommentView = new AddCommentView(mainPanel, cardLayout, ticketDatabase, authenticatedUser, technician);
-        mainPanel.add(addCommentView, "AddCommentPanel");
-        AddCommentController createTicketController = new AddCommentController(addCommentView, ticketDatabase, this, authenticatedUser, technician);
-        cardLayout.show(mainPanel, "AddCommentPanel");
+        AddCommentController addCommentController = new AddCommentController(addCommentView, ticketDatabase, this, authenticatedUser, technician);
+        addViewAndShow(addCommentView, "AddCommentPanel");
     }
 
+    // Show the administrator panel
     public void showAdministratorPanel() {
         AdministratorView administratorView = new AdministratorView(mainPanel, cardLayout, ticketDatabase, userDatabase, this);
-        mainPanel.add(administratorView, "AdministratorPanel");
         AdministratorController administratorController = new AdministratorController(administratorView, ticketDatabase, userDatabase, this);
-        cardLayout.show(mainPanel, "AdministratorPanel");
+        addViewAndShow(administratorView, "AdministratorPanel");
     }
 
+    // Show the edit user panel
     public void showEditUserPanel(User user, String editType) {
         EditUserView editUserView = new EditUserView(mainPanel, cardLayout, userDatabase, user, editType);
-        mainPanel.add(editUserView, "EditUserPanel");
         EditUserController editUserController = new EditUserController(editUserView, userDatabase, this, user, editType);
-        cardLayout.show(mainPanel, "EditUserPanel");
+        addViewAndShow(editUserView, "EditUserPanel");
     }
 
+    // Show the technician panel
     public void showTechnicianPanel(Technician technician) {
         TechnicianView technicianView = new TechnicianView(mainPanel, cardLayout, ticketDatabase, userDatabase, technician);
-        technicianView.setDatabases(ticketDatabase, userDatabase);
-        mainPanel.add(technicianView, "TechnicianPanel");
+        technicianView.setDatabases(ticketDatabase, userDatabase);  // Ensure databases are set correctly
         TechnicianController technicianController = new TechnicianController(technicianView, ticketDatabase, this, technician);
-        cardLayout.show(mainPanel, "TechnicianPanel");
+        addViewAndShow(technicianView, "TechnicianPanel");
+    }
+
+    // Helper method to add a view to the main panel and show it
+    private void addViewAndShow(JPanel view, String panelName) {
+        mainPanel.add(view, panelName);
+        cardLayout.show(mainPanel, panelName);
     }
 }

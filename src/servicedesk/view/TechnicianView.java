@@ -124,8 +124,9 @@ public class TechnicianView extends BaseRolePanel {
     public JButton getAddCommentButton() {
         return addCommentButton;
     }
+
     public void setDatabases(TicketDatabase ticketDatabase, UserDatabase userDatabase) {
-    setTicketDatabase(ticketDatabase);
-    setUserDatabase(userDatabase);
-}
+        setTicketDatabase(ticketDatabase);
+        setUserDatabase(userDatabase);
+    }
 }

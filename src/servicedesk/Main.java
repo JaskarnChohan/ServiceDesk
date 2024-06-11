@@ -38,8 +38,10 @@ public class Main {
             UserDatabase userDatabase = new UserDatabase(dbConnection.getConnection());
             TicketDatabase ticketDatabase = new TicketDatabase(dbConnection.getConnection());
 
+            // Main class that helps to navigate between panels.
             ApplicationController appController = new ApplicationController(userDatabase, ticketDatabase, mainPanel, cardLayout);
 
+            // Show the welcome panel
             appController.showWelcomePanel();
         } catch (Exception ex) {
             // Display an error message if application fails to start up. 
