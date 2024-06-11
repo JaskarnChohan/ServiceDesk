@@ -70,6 +70,13 @@ public class AdministratorView extends BaseRolePanel {
         JScrollPane scrollPane = new JScrollPane(contentPanel);
         contentWrapperPanel.add(scrollPane, BorderLayout.CENTER);
 
+        // Display message
+        JLabel initialMessageLabel = new JLabel("Please select an option below.");
+        initialMessageLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        initialMessageLabel.setForeground(new Color(0, 48, 63));
+        initialMessageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        contentPanel.add(initialMessageLabel);
         return contentWrapperPanel;
     }
 

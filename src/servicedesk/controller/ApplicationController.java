@@ -72,4 +72,11 @@ public class ApplicationController {
         AdministratorController administratorController = new AdministratorController(administratorView, ticketDatabase, userDatabase, this);
         cardLayout.show(mainPanel, "AdministratorPanel");
     }
+
+    public void showEditUserPanel(User user, String editType) {
+        EditUserView editUserView = new EditUserView(mainPanel, cardLayout, userDatabase, user, editType);
+        mainPanel.add(editUserView, "EditUserPanel");
+        EditUserController editUserController = new EditUserController(editUserView, userDatabase, this, user, editType);
+        cardLayout.show(mainPanel, "EditUserPanel");
+    }
 }

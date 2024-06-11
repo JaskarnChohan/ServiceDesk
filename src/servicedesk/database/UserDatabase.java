@@ -137,5 +137,68 @@ public class UserDatabase {
         }
         return users;
     }
+    
+    // Method to update a user's role.
+    public void updateUserRole(String email, Role role) throws SQLException {
+        String updateRoleSQL = "UPDATE users SET role = ? WHERE email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(updateRoleSQL)) {
+            pstmt.setString(1, role.name());
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // Method to update a user's password. 
+    public boolean updateUserPassword(String email, String hashedPassword) {
+        String updatePasswordSQL = "UPDATE users SET password = ? WHERE email = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(updatePasswordSQL)) {
+            pstmt.setString(1, hashedPassword);
+            pstmt.setString(2, email);
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    // Method to update a user's specialties.  
+    public boolean updateUserSpecialties(String email, List<Category> specialties) {
+        String deleteSQL = "DELETE FROM technician_specialities WHERE email = ?";
+        String insertSQL = "INSERT INTO technician_specialities (email, speciality) VALUES (?, ?)";
+
+        try (PreparedStatement deletePstmt = conn.prepareStatement(deleteSQL)) {
+            // Begin transaction
+            conn.setAutoCommit(false);
+
+            // Delete existing specialties
+            deletePstmt.setString(1, email);
+            deletePstmt.executeUpdate();
+
+            // Insert new specialties
+            try (PreparedStatement insertPstmt = conn.prepareStatement(insertSQL)) {
+                for (Category speciality : specialties) {
+                    insertPstmt.setString(1, email);
+                    insertPstmt.setString(2, speciality.name());
+                    insertPstmt.addBatch();
+                }
+                insertPstmt.executeBatch();
+            }
+
+            // Commit transaction
+            conn.commit();
+            conn.setAutoCommit(true);
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            try {
+                conn.rollback();
+                conn.setAutoCommit(true);
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+            return false;
+        }
+    }
 
 }
