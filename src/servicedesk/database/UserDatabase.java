@@ -21,18 +21,21 @@ public class UserDatabase {
         this.conn = conn;
     }
 
-    // Method to check the database if the user exists. Used during signup
+// Method to check if the user exists in the database.
     public boolean userExists(String email) {
-        String query = "SELECT EXISTS (SELECT 1 FROM users WHERE email = ?)";
+        String query = "SELECT COUNT(*) FROM users WHERE email = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(query)) {
             pstmt.setString(1, email);
             try (ResultSet resultSet = pstmt.executeQuery()) {
-                return resultSet.next() && resultSet.getBoolean(1);
+                if (resultSet.next()) {
+                    int count = resultSet.getInt(1);
+                    return count > 0;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     // Method to save a user into the database with the User object.
@@ -48,7 +51,13 @@ public class UserDatabase {
             pstmt.executeUpdate();
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getSQLState().equals("23505")) {
+                // Constraint violation: duplicate key
+                System.err.println("Failed to save new user. User with the same email already exists.");
+            } else {
+                // Other SQL errors
+                e.printStackTrace();
+            }
             return false;
         }
     }

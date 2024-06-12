@@ -33,7 +33,7 @@ public class DatabaseConnection {
     }
 
     // Method to connect to the database using connection information. 
-    private boolean connect() {
+    public boolean connect() {
         try {
             conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
             statement = conn.createStatement();
@@ -89,7 +89,6 @@ public class DatabaseConnection {
     private void createCommentsTable() throws SQLException {
         if (!tableExists("comments")) {
             statement.executeUpdate("CREATE TABLE comments ("
-                    + "comment_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY, "
                     + "ticket_id INT, "
                     + "timestamp TIMESTAMP, "
                     + "created_by_email VARCHAR(255), "
@@ -110,7 +109,7 @@ public class DatabaseConnection {
     }
 
     // Check if a table exists in the database already.
-    private boolean tableExists(String tableName) throws SQLException {
+    public boolean tableExists(String tableName) throws SQLException {
         DatabaseMetaData meta = conn.getMetaData();
         try (ResultSet res = meta.getTables(null, null, tableName.toUpperCase(), new String[]{"TABLE"})) {
             return res.next();

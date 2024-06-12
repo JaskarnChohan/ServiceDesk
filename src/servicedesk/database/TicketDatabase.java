@@ -41,11 +41,10 @@ public class TicketDatabase {
             pstmt.setInt(1, ticketId);
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
-                    int commentId = rs.getInt("comment_id");
                     LocalDateTime timestamp = rs.getTimestamp("timestamp").toLocalDateTime();
                     String createdByEmail = rs.getString("created_by_email");
                     String content = rs.getString("content");
-                    comments.add(new Comment(commentId, ticketId, timestamp, createdByEmail, content));
+                    comments.add(new Comment(ticketId, timestamp, createdByEmail, content));
                 }
             }
         } catch (SQLException e) {

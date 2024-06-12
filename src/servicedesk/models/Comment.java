@@ -1,19 +1,18 @@
 package servicedesk.models;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Comment {
 
     // Data fields to store all the comment's information.  
-    private final int commentId;
     private final int ticketId;
     private final LocalDateTime timestamp;
     private final String content;
     private final String createdByEmail;
 
     // Constructor to initialise comment object with provided data. 
-    public Comment(int commentId, int ticketId, LocalDateTime timestamp, String createdByEmail, String content) {
-        this.commentId = commentId;
+    public Comment(int ticketId, LocalDateTime timestamp, String createdByEmail, String content) {
         this.ticketId = ticketId;
         this.timestamp = timestamp;
         this.createdByEmail = createdByEmail;
@@ -21,10 +20,6 @@ public class Comment {
     }
 
     // Getters
-    public int getCommentId() {
-        return commentId;
-    }
-
     public int getTicketId() {
         return ticketId;
     }
@@ -44,6 +39,12 @@ public class Comment {
     // Override toString method to display comments
     @Override
     public String toString() {
-        return "[" + timestamp + "] " + createdByEmail + ": " + content;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+        // Format the timestamp using the formatter
+        String formattedTimestamp = timestamp.format(formatter);
+
+        // Construct the string representation of the comment
+        return "[" + formattedTimestamp + "] " + createdByEmail + ": " + content;
     }
 }

@@ -67,7 +67,7 @@ public abstract class BaseRolePanel extends JPanel {
 
         // Button panel for technicians
         if (role == Role.TECHNICIAN) {
-            JPanel buttonPanel = createButtonPanel(ticket, email);
+            JPanel buttonPanel = createButtonPanel(panel, ticket, email);
             ticketContainer.add(buttonPanel, BorderLayout.EAST);
         }
 
@@ -202,7 +202,7 @@ public abstract class BaseRolePanel extends JPanel {
     }
 
     // Method to create the button panel for technicians
-    private JPanel createButtonPanel(Ticket ticket, String email) {
+    private JPanel createButtonPanel(JPanel panel, Ticket ticket, String email) {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridBagLayout());
         buttonPanel.setBackground(Color.WHITE);
@@ -216,11 +216,11 @@ public abstract class BaseRolePanel extends JPanel {
 
         if (ticket.getAssignedTechnicianEmail() == null) {
             // Add claim button if there is no one assigned
-            StyledButton claimTicketButton = createClaimTicketButton(ticket, email);
+            StyledButton claimTicketButton = createClaimTicketButton(panel, ticket, email);
             buttonPanel.add(claimTicketButton, gbc);
         } else {
             // If someone is assigned then add change status button 
-            StyledButton changeStatusButton = createChangeStatusButton(ticket, email);
+            StyledButton changeStatusButton = createChangeStatusButton(panel, ticket, email);
             buttonPanel.add(changeStatusButton, gbc);
         }
 
@@ -228,38 +228,38 @@ public abstract class BaseRolePanel extends JPanel {
     }
 
     // Method to create the claim ticket button
-    private StyledButton createClaimTicketButton(Ticket ticket, String email) {
+    private StyledButton createClaimTicketButton(JPanel panel, Ticket ticket, String email) {
         StyledButton claimTicketButton = new StyledButton("CLAIM TICKET");
         claimTicketButton.setPreferredSize(new Dimension(130, 30));
         claimTicketButton.setFont(new Font("Arial", Font.BOLD, 12));
         claimTicketButton.addActionListener(e -> {
             ticket.setAssignedTechnicianEmail(email);
             ticketDatabase.updateTicket(ticket);
-            removeAllAndRefresh(email);
+            removeAllAndRefresh(panel, email);
         });
         return claimTicketButton;
     }
 
     // Method to create the change status button
-    private StyledButton createChangeStatusButton(Ticket ticket, String email) {
+    private StyledButton createChangeStatusButton(JPanel panel, Ticket ticket, String email) {
         StyledButton changeStatusButton = new StyledButton("CHANGE STATUS");
         changeStatusButton.setPreferredSize(new Dimension(130, 30));
         changeStatusButton.setFont(new Font("Arial", Font.BOLD, 12));
         changeStatusButton.addActionListener(e -> {
             ticket.setResolved(!ticket.isResolved());
             ticketDatabase.updateTicket(ticket);
-            removeAllAndRefresh(email);
+            removeAllAndRefresh(panel, email);
         });
         return changeStatusButton;
     }
 
     // Method to remove all components from the panel and refresh the view
-    private void removeAllAndRefresh(String email) {
-        removeAll();
+    private void removeAllAndRefresh(JPanel panel, String email) {
+        panel.removeAll();
         List<Ticket> tickets = ticketDatabase.getTicketsForTechnician(email);
-        addTicketsToPanel(this, tickets, ticketDatabase, Role.TECHNICIAN, email);
-        revalidate();
-        repaint();
+        addTicketsToPanel(panel, tickets, ticketDatabase, Role.TECHNICIAN, email);
+        panel.revalidate();
+        panel.repaint();
     }
 
     // Method to add section heading

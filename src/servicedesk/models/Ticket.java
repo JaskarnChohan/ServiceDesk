@@ -10,8 +10,8 @@ public class Ticket {
 
     private final int ticketId;
     private final Category category;
-    private final String title;
-    private final String description;
+    private String title;
+    private String description;
     private final Priority priority;
     private final LocalDate createdDate;
     private final String createdByUserEmail;
@@ -93,6 +93,11 @@ public class Ticket {
     // Set the assigned technician's email
     public void setAssignedTechnicianEmail(String assignedTechnicianEmail) {
         this.assignedTechnicianEmail = assignedTechnicianEmail;
+    }
+
+    // Set description of ticket
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     // toString() for drop down boxes. 
